@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31561b1de9fc4882ba488c8c1d78b161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowCoordinates: 1
+  ShowCoordinates: 0
   _q: {fileID: 6753097555247327104}
   _r: {fileID: 3816400393044671598}
 --- !u!1 &2381979893317288496

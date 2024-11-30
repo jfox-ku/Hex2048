@@ -20,7 +20,7 @@ namespace HexGridNamespace
         {
             Element = element;
             transform.position = Element.Tile.View.transform.position;
-            _scaleTween = transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutBack, 1.2f).From(Vector2.zero);
+            _scaleTween = transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack, 1.2f).From(Vector2.zero);
             SpriteRenderer.color = GridRoot.Instance.Colors.GetColor(Element.Value);
             Text.text = Element.Value.GetName();
             element.OnTileChanged += OnTargetTileChanged;
@@ -29,6 +29,8 @@ namespace HexGridNamespace
 
         private void OnValueChanged(ElementValue obj)
         {
+            _scaleTween.Kill();
+            _scaleTween = transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack, 1.2f).From(Vector2.one / 2f);
             SpriteRenderer.color = GridRoot.Instance.Colors.GetColor(obj);
             Text.text = obj.GetName();
         }
