@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace HexGridNamespace
 {
+    [Serializable]
     public struct Axial
     {
         public int Q;

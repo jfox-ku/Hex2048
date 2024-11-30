@@ -11,11 +11,7 @@ namespace HexGridNamespace
         public HexTileElement Element
         {
             get => _element;
-            set
-            {
-                _element = value;
-                _element?.OnTileChanged?.Invoke(this);
-            }
+            set => _element = value;
         }
         
         public bool HasElement => Element != null;

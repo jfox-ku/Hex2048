@@ -175,8 +175,8 @@ Material:
     - _OutlineWidth: 0.004
     - _OverlayBlend: 0
     - _OverlayGlow: 1
-    - _OverlayTextureScrollXSpeed: 0.000000017484556
-    - _OverlayTextureScrollYSpeed: -0.4
+    - _OverlayTextureScrollXSpeed: -0.0000000047699524
+    - _OverlayTextureScrollYSpeed: 0.4
     - _PinchUvAmount: 0.35
     - _PixelateSize: 32
     - _PosterizeGamma: 0.75

@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace HexGridNamespace
 {
+    [Serializable]
     public class HexGrid
     {
         private Dictionary<Axial, HexTile> _tiles;
@@ -91,8 +95,13 @@ namespace HexGridNamespace
                 }
             }
         }
-        
-        private IEnumerable<HexTile> GetTilesInLine(Axial start, Axial direction)
+
+        public IEnumerable<HexTile> GetAllTiles()
+        {
+            return _tiles.Values;
+        }
+
+        public IEnumerable<HexTile> GetTilesInLine(Axial start, Axial direction)
         {
             var current = start;
             while (HasTile(current))
@@ -102,7 +111,7 @@ namespace HexGridNamespace
             }
         }
 
-        private IEnumerable<HexTile> GetTilesOnEdge(Axial direction)
+        public IEnumerable<HexTile> GetTilesOnEdge(Axial direction)
         {
             foreach (var (key, value) in _tiles)
             {
@@ -150,49 +159,45 @@ namespace HexGridNamespace
         
         private void MoveTileElement(HexTile stationaryTile, HexTile movedTile)
         {
-            stationaryTile.Element = movedTile.Element;
-            movedTile.Element = null;
+            movedTile.Element.MoveTo(stationaryTile);
         }
         
         private void MergeLineInDirection(Axial start, Axial direction, out bool anyActDone)
         {
             anyActDone = false;
             var line = GetTilesInLine(start, -direction).ToList();
-            line.Reverse();
             if (line.Count == 0) return;
             if (line.FirstOrDefault(t => t.HasElement) == null) return;
 
-            for (var m = 0; m < line.Count; m++)
+            for (int m = 0; m < line.Count; m++)
             {
-                var mergeTile = line[m];
+                var currentTile = line[m];
                 for (int i = m + 1; i < line.Count; i++)
                 {
                     var nextTile = line[i];
-                    if(!nextTile.HasElement) continue;
-                    if (CanMergeTiles(mergeTile,nextTile))
+                    if (!nextTile.HasElement) continue;
+
+                    // Check if the tiles can merge
+                    if (CanMergeTiles(currentTile, nextTile))
                     {
-                        MergeTiles(mergeTile, nextTile);
-                        m--;
+                        MergeTiles(currentTile, nextTile);
                         anyActDone = true;
+                        m = -1; // Allow the merged tile to participate in another merge
                         break;
                     }
-                    else if (mergeTile.HasElement)
+                    else if (!currentTile.HasElement) // Move tile if current is empty
                     {
-                        var nextToMerge = line[m + 1];
-                        if(nextToMerge.Coordinate == nextTile.Coordinate) continue;
-                        MoveTileElement(nextToMerge, nextTile);
+                        MoveTileElement(currentTile, nextTile);
                         anyActDone = true;
-                    }
-                    else
-                    {
-                        MoveTileElement(mergeTile,nextTile);
-                        m--;
-                        anyActDone = true;
+                        m = -1; // Allow the moved tile to participate in another merge
                         break;
                     }
                 }
             }
         }
+
+
         
+
     }
 }

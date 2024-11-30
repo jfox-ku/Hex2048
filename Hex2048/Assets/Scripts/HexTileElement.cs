@@ -6,16 +6,17 @@ namespace HexGridNamespace
     public class HexTileElement
     {
         public Action<HexTile> OnTileChanged;
+        public Action<ElementValue> OnValueChanged;
         
         public ElementValue Value { get; private set; }
         public HexTile Tile { get; private set; }
         public HexTileElementView View { get; private set; }
         
-        public HexTileElement(HexTile tile)
+        public HexTileElement(HexTile tile, ElementValue? val = null)
         {
             Tile = tile;
             View = GameObject.Instantiate(GridRoot.Instance.HexElementPrefab).GetComponent<HexTileElementView>();
-            Value = ElementValueExtensions.GetRandom(3);
+            Value = val ?? ElementValueExtensions.GetRandom(3);
             View.AssignElement(this);
         }
 
@@ -28,12 +29,20 @@ namespace HexGridNamespace
         {
             Value = Value.GetNext();
             element.Destroy();
+            OnValueChanged?.Invoke(Value);
+        }
+        
+        public void MoveTo(HexTile tile)
+        {
+            Tile.Element = null;
+            Tile = tile;
+            Tile.Element = this;
             OnTileChanged?.Invoke(Tile);
         }
 
         public void Destroy()
         {
-            GameObject.Destroy(View.gameObject);
+            View.SetToBeDestroyed();
         }
     }
 }

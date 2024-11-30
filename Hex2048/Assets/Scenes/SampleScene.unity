@@ -460,7 +460,10 @@ MonoBehaviour:
   size: 0.4
   HexPrefab: {fileID: 1236134420039243197, guid: f39579fd8627d26448a0d87d36d922bc, type: 3}
   HexElementPrefab: {fileID: 1236134420039243197, guid: 72b32d4c43880204aa35a555550e0ef0, type: 3}
-  N: 3
+  N: 2
+  TestDirection:
+    Q: 0
+    R: 0
 --- !u!4 &1123032411
 Transform:
   m_ObjectHideFlags: 0
